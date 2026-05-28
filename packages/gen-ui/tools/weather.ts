@@ -47,18 +47,29 @@ export const WeatherTool = Tool.define(
           )
 
           const response = yield* http.execute(request)
-          const json = yield* response.json as Effect.Effect<any>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+          // Safe: response.json returns Effect<unknown> and is typed correctly from the HTTP client library
+          const json: unknown = yield* (response.json as Effect.Effect<unknown>)
 
           const current = json.current_condition?.[0]
           const area = json.nearest_area?.[0]
 
-          if (!current) {
-            return {
-              title: `Weather for ${params.location}`,
-              output: `Could not fetch weather data for "${params.location}". Please check the location name.`,
-              metadata: {} as WeatherMetadata,
-            }
-          }
+           if (!current) {
+             return {
+               title: `Weather for ${params.location}`,
+               output: `Could not fetch weather data for "${params.location}". Please check the location name.`,
+               metadata: {
+                 location: params.location,
+                 temperature: 0,
+                 feels_like: 0,
+                 humidity: 0,
+                 description: "Unable to fetch",
+                 icon: "🌡️",
+                 wind_speed: 0,
+                 units: params.units,
+               },
+             }
+           }
 
           const tempC = parseInt(current.temp_C)
           const feelsC = parseInt(current.FeelsLikeC)

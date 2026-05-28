@@ -45,11 +45,11 @@ export function PlotlyPlugin(props: { data: PlotlyData }) {
       font: { color: "#d6d8de" },
       margin: { t: props.data.title ? 44 : 20, r: 20, b: 44, l: 48 },
       title: props.data.title ? { text: props.data.title } : undefined,
-      ...(props.data.layout ?? {}),
+      ...props.data.layout,
     }
 
     void loadPlotly()
-      .then((plotly) => plotly.react(container, traces, layout, { responsive: true, displayModeBar: false, ...(props.data.config ?? {}) }))
+      .then((plotly) => plotly.react(container, traces, layout, { responsive: true, displayModeBar: false, ...props.data.config }))
       .catch((cause) => setError(cause instanceof Error ? cause.message : "Unable to render Plotly chart."))
       .finally(() => setLoading(false))
   })

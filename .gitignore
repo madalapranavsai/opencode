@@ -30,3 +30,12 @@ UPCOMING_CHANGELOG.md
 logs/
 *.bun-build
 tsconfig.tsbuildinfo
+
+node_modules/
+.opencode/
+dist/
+.cache/
+turbo/
+.next/
+.vite/
+

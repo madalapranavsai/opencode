@@ -33,8 +33,9 @@ export function A2UICard(props: ToolProps) {
   const htmlSrcDoc = createMemo(() => {
     const data = meta().data
     if (typeof data === "string" && looksLikeHtml(data)) return data
-    if (data && typeof data === "object" && "html" in data && looksLikeHtml((data as { html?: unknown }).html)) {
-      return (data as { html: string }).html
+    if (data && typeof data === "object" && "html" in data) {
+      const html = (data as Record<string, unknown>).html
+      if (typeof html === "string" && looksLikeHtml(html)) return html
     }
     return undefined
   })
@@ -72,40 +73,40 @@ export function A2UICard(props: ToolProps) {
                 {(schema) => <RenderWidget schema={schema()} title={meta().title} />}
               </Match>
               <Match when={meta().component === "bar_chart"}>
-                <BarChart data={meta().data as any} />
+                <BarChart data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "line_chart"}>
-                <LineChart data={meta().data as any} />
+                <LineChart data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "table"}>
-                <DataTable data={meta().data as any} />
+                <DataTable data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "metric_card"}>
-                <MetricCard data={meta().data as any} />
+                <MetricCard data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "timeline"}>
-                <Timeline data={meta().data as any} />
+                <Timeline data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "progress"}>
-                <Progress data={meta().data as any} />
+                <Progress data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "mermaid"}>
-                <MermaidPlugin data={meta().data as any} />
+                <MermaidPlugin data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "plotly"}>
-                <PlotlyPlugin data={meta().data as any} />
+                <PlotlyPlugin data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "d3"}>
-                <D3Plugin data={meta().data as any} />
+                <D3Plugin data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "leaflet"}>
-                <LeafletPlugin data={meta().data as any} />
+                <LeafletPlugin data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "threejs"}>
-                <ThreeJSPlugin data={meta().data as any} />
+                <ThreeJSPlugin data={meta().data ?? {}} />
               </Match>
               <Match when={meta().component === "ag_grid"}>
-                <AgGridPlugin data={meta().data as any} />
+                <AgGridPlugin data={meta().data ?? {}} />
               </Match>
             </Switch>
           </ErrorBoundary>
@@ -116,14 +117,27 @@ export function A2UICard(props: ToolProps) {
 }
 
 function isWidgetSchema(value: unknown): value is WidgetSchema {
-  return Boolean(value && typeof value === "object" && "widget" in value && typeof (value as WidgetSchema).widget === "string")
+  return Boolean(
+    value &&
+    typeof value === "object" &&
+    "widget" in value &&
+    typeof (value as Record<string, unknown>).widget === "string"
+  )
 }
 
 function isGenUISchema(value: unknown): value is GenUISchema {
   if (!value || typeof value !== "object" || !("type" in value)) return false
-  const schema = value as GenUISchema
-  if (schema.type === "dialog") return Boolean("dialog" in schema && schema.dialog?.options)
-  return schema.type === "widget" && "widget" in schema
+  const maybeType = (value as Record<string, unknown>).type
+  if (maybeType === "dialog") {
+    const obj = value as Record<string, unknown>
+    return Boolean(
+      "dialog" in obj &&
+      obj.dialog &&
+      typeof obj.dialog === "object" &&
+      "options" in obj.dialog
+    )
+  }
+  return maybeType === "widget" && "widget" in value
 }
 
 function looksLikeHtml(value: unknown): value is string {

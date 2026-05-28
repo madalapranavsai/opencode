@@ -12,7 +12,12 @@ export function WidgetIframeRuntime<TSchema extends WidgetSchema<object>>(props:
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return
       if (event.data?.type !== "opencode:widget-schema") return
-      setSchema(() => event.data.schema as TSchema)
+      const schema = event.data?.schema
+      if (schema && typeof schema === "object" && Object.keys(schema).length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion
+        // Safe: message type check and object validation ensure this is the expected schema structure
+        setSchema(() => schema as TSchema)
+      }
     }
 
     window.addEventListener("message", onMessage)

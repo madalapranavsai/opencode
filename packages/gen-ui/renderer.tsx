@@ -20,9 +20,16 @@ export function RenderGenUI(props: RenderGenUIProps) {
   return (
     <Show
       when={props.schema.type === "dialog"}
-      fallback={<RenderWidget schema={props.schema as WidgetSchema} title={props.title} height={props.height} />}
+      fallback={() => {
+        if (props.schema.type === "dialog") return undefined
+        return <RenderWidget schema={props.schema as WidgetSchema} title={props.title} height={props.height} />
+      }}
     >
-      <DialogRenderer schema={props.schema as Extract<GenUISchema, { type: "dialog" }>} onAction={props.onAction} />
+      {() => {
+        if (props.schema.type !== "dialog") return undefined
+        // Schema type guard ensures this is DialogSchema
+        return <DialogRenderer schema={props.schema} onAction={props.onAction} />
+      }}
     </Show>
   )
 }
