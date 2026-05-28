@@ -24,6 +24,8 @@ import { ProviderID, type ModelID } from "../provider/schema"
 import { WebSearchTool } from "./websearch"
 import { RepoCloneTool } from "./repo_clone"
 import { RepoOverviewTool } from "./repo_overview"
+import { WeatherTool } from "@opencode-ai/gen-ui/tools/weather"
+import { A2UITool } from "@opencode-ai/gen-ui/tools/a2ui"
 import { RepositoryCache } from "@/reference/repository-cache"
 import * as Log from "@opencode-ai/core/util/log"
 import { LspTool } from "./lsp"
@@ -125,6 +127,8 @@ export const layer: Layer.Layer<
     const websearch = yield* WebSearchTool
     const repoClone = yield* RepoCloneTool
     const repoOverview = yield* RepoOverviewTool
+    const weather = yield* WeatherTool
+    const a2ui = yield* A2UITool
     const shell = yield* ShellTool
     const globtool = yield* GlobTool
     const writetool = yield* WriteTool
@@ -236,6 +240,8 @@ export const layer: Layer.Layer<
           search: Tool.init(websearch),
           repo_clone: Tool.init(repoClone),
           repo_overview: Tool.init(repoOverview),
+          weather: Tool.init(weather),
+          a2ui: Tool.init(a2ui),
           skill: Tool.init(skilltool),
           patch: Tool.init(patchtool),
           question: Tool.init(question),
@@ -259,6 +265,8 @@ export const layer: Layer.Layer<
             tool.todo,
             tool.search,
             ...(flags.experimentalScout ? [tool.repo_clone, tool.repo_overview] : []),
+            tool.weather,
+            tool.a2ui,
             tool.skill,
             tool.patch,
             ...(flags.experimentalLspTool ? [tool.lsp] : []),

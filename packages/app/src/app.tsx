@@ -9,7 +9,7 @@ import { Font } from "@opencode-ai/ui/font"
 import { Splash } from "@opencode-ai/ui/logo"
 import { ThemeProvider } from "@opencode-ai/ui/theme/context"
 import { MetaProvider } from "@solidjs/meta"
-import { type BaseRouterProps, Navigate, Route, Router } from "@solidjs/router"
+import { type BaseRouterProps, Navigate, Route, Router, useLocation } from "@solidjs/router"
 import { QueryClient, QueryClientProvider } from "@tanstack/solid-query"
 import { Effect } from "effect"
 import {
@@ -55,6 +55,7 @@ if (import.meta.env.VITE_OPENCODE_CHANNEL !== "prod") {
 
 const HomeRoute = lazy(() => import("@/pages/home"))
 const Session = lazy(() => import("@/pages/session"))
+const ChartWidgetRoute = lazy(() => import("@opencode-ai/gen-ui/widgets/chart"))
 
 const SessionRoute = Object.assign(
   () => (
@@ -130,13 +131,26 @@ function SessionProviders(props: ParentProps) {
 }
 
 function RouterRoot(props: ParentProps<{ appChildren?: JSX.Element }>) {
+  const location = useLocation()
+  const isWidgetRoute = createMemo(() => location.pathname.startsWith("/widgets/"))
+
   return (
-    <AppShellProviders>
-      {/*<Suspense fallback={<Loading />}>*/}
-      {props.appChildren}
-      {props.children}
-      {/*</Suspense>*/}
-    </AppShellProviders>
+    <Show
+      when={!isWidgetRoute()}
+      fallback={
+        <>
+          {props.appChildren}
+          {props.children}
+        </>
+      }
+    >
+      <AppShellProviders>
+        {/*<Suspense fallback={<Loading />}>*/}
+        {props.appChildren}
+        {props.children}
+        {/*</Suspense>*/}
+      </AppShellProviders>
+    </Show>
   )
 }
 
@@ -313,6 +327,7 @@ export function AppInterface(props: {
                     component={props.router ?? Router}
                     root={(routerProps) => <RouterRoot appChildren={props.children}>{routerProps.children}</RouterRoot>}
                   >
+                    <Route path="/widgets/chart" component={ChartWidgetRoute} />
                     <Route path="/" component={HomeRoute} />
                     <Route path="/:dir" component={DirectoryLayout}>
                       <Route path="/" component={() => <Navigate href="session" />} />

@@ -1,0 +1,22 @@
+0 verbose cli /usr/local/bin/node /usr/local/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:/usr/local/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/pranavsaimadala/Desktop/project/opencode-fresh/.npmrc
+5 silly config load:file:/Users/pranavsaimadala/.npmrc
+6 silly config load:file:/usr/local/etc/npmrc
+7 verbose title npm exec @modelcontextprotocol/server-filesystem .
+8 verbose argv "exec" "--yes" "--" "@modelcontextprotocol/server-filesystem" "."
+9 verbose logfile logs-max:10 dir:/Users/pranavsaimadala/Desktop/project/opencode-fresh/.opencode/.npm-cache/_logs/2026-05-27T12_15_04_965Z-
+10 verbose logfile /Users/pranavsaimadala/Desktop/project/opencode-fresh/.opencode/.npm-cache/_logs/2026-05-27T12_15_04_965Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+13 http fetch GET 200 https://registry.npmjs.org/@modelcontextprotocol%2fserver-filesystem 283ms (cache revalidated)
+14 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+15 silly packumentCache heap:2197815296 maxSize:549453824 maxEntrySize:274726912
+16 verbose cwd /Users/pranavsaimadala/Desktop/project/opencode-fresh
+17 verbose os Darwin 25.4.0
+18 verbose node v22.20.0
+19 verbose npm  v10.9.3
+20 verbose exit 0
+21 info ok

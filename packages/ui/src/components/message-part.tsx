@@ -2411,3 +2411,16 @@ ToolRegistry.register({
     return <BasicTool icon="brain" status={props.status} trigger={trigger()} hideDetails />
   },
 })
+
+import { WeatherCard } from "@opencode-ai/gen-ui/ui/weather-card"
+import { A2UICard } from "@opencode-ai/gen-ui/ui/a2ui-card"
+
+ToolRegistry.register({
+  name: "get_weather",
+  render: WeatherCard,
+})
+
+ToolRegistry.register({
+  name: "render_ui",
+  render: A2UICard,
+})

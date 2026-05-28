@@ -1,0 +1,39 @@
+{
+  "name": "@opencode-ai/gen-ui",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./schema": "./schema.ts",
+    "./registry": "./registry.ts",
+    "./renderer": "./renderer.tsx",
+    "./dialog-renderer": "./dialog-renderer.tsx",
+    "./action-bus": "./action-bus.ts",
+    "./iframe": "./iframe.tsx",
+    "./widgets/chart": "./widgets/chart/index.tsx",
+    "./tools/weather": "./tools/weather.ts",
+    "./tools/a2ui": "./tools/a2ui.ts",
+    "./ui/weather-card": "./ui/weather-card.tsx",
+    "./ui/a2ui-card": "./ui/a2ui-card.tsx"
+  },
+  "dependencies": {
+    "@opencode-ai/ui": "workspace:*",
+    "ag-grid-community": "35.3.0",
+    "d3": "7.9.0",
+    "effect": "catalog:",
+    "leaflet": "1.9.4",
+    "mermaid": "11.15.0",
+    "plotly.js-dist-min": "3.5.1",
+    "solid-js": "catalog:",
+    "three": "0.184.0"
+  },
+  "devDependencies": {
+    "@types/d3": "7.4.3",
+    "@types/leaflet": "1.9.21",
+    "@types/plotly.js": "3.0.10",
+    "@types/three": "0.184.1",
+    "opencode": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
